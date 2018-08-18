@@ -29,14 +29,27 @@ reader.on('line', (data) => {
     else if (data.match('^(BODY:)')) {
         isBody = true;
     }
-    else if ((isBody == true) && (data == '-----')) {
-        isBody = false;
+    else if (data.match('^(COMMENT:)')) {
+        obj.lines.push('');
+        obj.lines.push('----');
+        isBody = true;
+    }
+    else if (data.match('^(AUTHOR:)')) {}
+    else if (data.match('^(IP:)')) {}
+    else if (data.match('^(DATE:)')) {}
+    else if (data == '-----') {
+        if (isBody == true) {
+            isBody = false;
+        }
     }
     else if (data == '--------') {
         doc.pages.push(obj);
     }
-    else if (isBody == true) {
-        obj.lines.push(data.trim());
+    else {
+        // Contents
+        if (isBody == true) {
+            obj.lines.push(data.trim());
+        }    
     }
 });
 
