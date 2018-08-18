@@ -36,7 +36,7 @@ reader.on('line', (data) => {
         doc.pages.push(obj);
     }
     else if (isBody == true) {
-        obj.lines.push(data);
+        obj.lines.push(data.trim());
     }
 });
 
@@ -44,4 +44,3 @@ reader.on('close', () => {
     var json = JSON.stringify(doc);
     console.log(json);
 });
-    
