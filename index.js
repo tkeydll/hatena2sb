@@ -5,7 +5,7 @@ var readline = require('readline');
 var path = process.argv[2];
 if (path == undefined)
 {
-    console.log("usage: node index.js your_hatena_export_data");
+    console.log("Usage: node index.js your_hatena_exported_file");
     console.log("");
     return;
 }
@@ -38,7 +38,6 @@ reader.on('line', (data) => {
     else if (isBody == true) {
         obj.lines.push(data);
     }
-    //console.log(line);
 });
 
 reader.on('close', () => {
