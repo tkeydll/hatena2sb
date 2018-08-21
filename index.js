@@ -1,4 +1,3 @@
-
 var fs = require('fs');
 var readline = require('readline');
 
@@ -9,6 +8,8 @@ if (path == undefined)
     console.log("");
     return;
 }
+
+var category = process.argv[3];
 
 var reader = readline.createInterface({
     input: fs.createReadStream(path, 'utf8')
@@ -34,6 +35,9 @@ reader.on('line', (data) => {
         obj.lines.push('----');
         isBody = true;
     }
+    else if (data.match('^(CATEGORY:)')) {
+        obj.categoriy = data.split(': ')[1];
+    }
     else if (data.match('^(AUTHOR:)')) {}
     else if (data.match('^(IP:)')) {}
     else if (data.match('^(DATE:)')) {}
@@ -43,7 +47,14 @@ reader.on('line', (data) => {
         }
     }
     else if (data == '--------') {
-        doc.pages.push(obj);
+        if (category == undefined) {
+            doc.pages.push(obj);
+        }
+        else {
+            if (obj.categoriy == category) {
+                doc.pages.push(obj);
+            }
+        }
     }
     else {
         // Contents
@@ -56,4 +67,5 @@ reader.on('line', (data) => {
 reader.on('close', () => {
     var json = JSON.stringify(doc);
     console.log(json);
+    console.log(doc.pages.length);
 });
