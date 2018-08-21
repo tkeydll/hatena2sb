@@ -67,5 +67,4 @@ reader.on('line', (data) => {
 reader.on('close', () => {
     var json = JSON.stringify(doc);
     console.log(json);
-    console.log(doc.pages.length);
 });
