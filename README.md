@@ -3,7 +3,7 @@ Convert from hatena blog to scrapbox.
 
 ## Preperation
 
-Convert "BODY" to plain text. 
+Convert "BODY" to plain text.
 Use [html2sb](https://github.com/pastak/html2sb).
 
 ## Usage
@@ -12,7 +12,7 @@ Use [html2sb](https://github.com/pastak/html2sb).
 node index.js your_exported_file [category]
 ```
 
-To save to file, like this.
+To save to a file.
 
 ```
 node index.js your_exported_file > import.json
