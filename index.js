@@ -44,6 +44,9 @@ reader.on('line', (data) => {
     else if (data == '-----') {
         if (isBody == true) {
             isBody = false;
+            // Add tag
+            obj.lines.push('');
+            obj.lines.push('#' + obj.categoriy);
         }
     }
     else if (data == '--------') {
@@ -60,7 +63,7 @@ reader.on('line', (data) => {
         // Contents
         if (isBody == true) {
             obj.lines.push(data.trim());
-        }    
+        }
     }
 });
 
