@@ -1,6 +1,7 @@
 var fs = require('fs');
 var readline = require('readline');
 
+
 var path = process.argv[2];
 if (path == undefined)
 {
@@ -15,6 +16,15 @@ var reader = readline.createInterface({
     input: fs.createReadStream(path, 'utf8')
 })
 
+function CreateDocument()
+{
+    let o = new Object();
+    o.title = '';
+    o.lines = new Array();
+    o.categories = new Array();
+    return o;
+}
+
 var doc = new Object;
 doc.pages = new Array();
 var obj;
@@ -22,9 +32,8 @@ var isBody = false;
 
 reader.on('line', (data) => {
     if (data.match('^(TITLE: )')) {
-        obj = new Object();
+        obj = CreateDocument();
         obj.title = data.split(': ')[1];
-        obj.lines = new Array();
         obj.lines.push(obj.title);
     }
     else if (data.match('^(BODY:)')) {
@@ -36,17 +45,22 @@ reader.on('line', (data) => {
         isBody = true;
     }
     else if (data.match('^(CATEGORY:)')) {
-        obj.categoriy = data.split(': ')[1];
+        obj.categories.push(data.split(': ')[1]);
     }
     else if (data.match('^(AUTHOR:)')) {}
     else if (data.match('^(IP:)')) {}
-    else if (data.match('^(DATE:)')) {}
+    else if (data.match('^(DATE:)')) {
+        var date = data.split(': ')[1];
+        
+    }
     else if (data == '-----') {
         if (isBody == true) {
             isBody = false;
             // Add tag
             obj.lines.push('');
-            obj.lines.push('#' + obj.categoriy);
+            obj.categories.forEach(element => {
+                obj.lines.push('#' + element);
+            });
         }
     }
     else if (data == '--------') {
@@ -54,7 +68,7 @@ reader.on('line', (data) => {
             doc.pages.push(obj);
         }
         else {
-            if (obj.categoriy == category) {
+            if (obj.categories.includes(category)) {
                 doc.pages.push(obj);
             }
         }
