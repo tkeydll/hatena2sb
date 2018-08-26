@@ -1,6 +1,6 @@
 var fs = require('fs');
 var readline = require('readline');
-
+var unixTime = require('unix-time');
 
 var path = process.argv[2];
 if (path == undefined)
@@ -20,6 +20,7 @@ function CreateDocument()
 {
     let o = new Object();
     o.title = '';
+    o.created = '';
     o.lines = new Array();
     o.categories = new Array();
     return o;
@@ -50,8 +51,8 @@ reader.on('line', (data) => {
     else if (data.match('^(AUTHOR:)')) {}
     else if (data.match('^(IP:)')) {}
     else if (data.match('^(DATE:)')) {
-        var date = data.split(': ')[1];
-        
+        let date = new Date(data.split(': ')[1]);
+        obj.created = unixTime(date);
     }
     else if (data == '-----') {
         if (isBody == true) {
